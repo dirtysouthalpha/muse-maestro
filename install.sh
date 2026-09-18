@@ -18,7 +18,7 @@ set -uo pipefail
 
 MUSE="${MUSE:-muse}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PLUGINS=(maestro-guardrail maestro-brain maestro-doneproof maestro-session-watch maestro-instinct)
+PLUGINS=(maestro-guardrail maestro-brain maestro-doneproof maestro-session-watch maestro-instinct maestro-secrets maestro-cost)
 
 if ! command -v "$MUSE" >/dev/null 2>&1; then
   echo "error: '$MUSE' not found on PATH. Set MUSE=/path/to/muse and retry." >&2

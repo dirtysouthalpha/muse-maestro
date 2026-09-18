@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-secrets",
+  "displayName": "Maestro Secrets",
+  "version": "0.1.0",
+  "description": "Credential hygiene. Blocks a tool command (PreToolUse) or a model call (PreLLMCall) that carries a secret-shaped value, so tokens/keys never land in the transcript or reach the provider. Generic detectors, user-extendable, allowlist-aware, fail-open. Never prints the matched secret.",
+  "compat": { "source": "native", "manifestDir": ".muse-plugin" },
+  "capabilities": {
+    "skills": [], "commands": [],
+    "hooks": [
+      { "id": "pre", "event": "PreToolUse", "command": ["node", "hooks/pre.mjs"], "timeoutMs": 4000, "statusMessage": "maestro-secrets: scan command" },
+      { "id": "prellm", "event": "PreLLMCall", "command": ["node", "hooks/prellm.mjs"], "timeoutMs": 4000, "statusMessage": "maestro-secrets: scan payload" }
+    ],
+    "mcpServers": [], "reminders": []
+  }
+}

@@ -2,12 +2,18 @@
 maestro.config.json
 
 # Any environment / secret material
+# (kept specific so it never swallows the maestro-secrets plugin source)
 .env
 .env.*
 *.env
+secrets.json
 **/secrets.json
-*secret*
-*.secret
+credentials.json
+*.pem
+*.key
+id_rsa
+id_rsa.*
+auth.json
 
 # Anything explicitly marked local (keeps private infra out of the public repo)
 *.local.json

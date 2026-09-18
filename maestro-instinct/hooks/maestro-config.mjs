@@ -57,6 +57,18 @@ export const DEFAULTS = {
     // PreToolUse commands matching this trigger a targeted instinct lookup.
     triggerPattern: '(cron\\b|crontab|\\bgpu\\b|nvidia|earlyoom|ollama|llama[-_ ]?swap|systemctl|model[ -]?server|reboot|shutdown)',
   },
+  secrets: {
+    enabled: true,
+    scanLLM: true,          // also scan outgoing model payloads (PreLLMCall)
+    highEntropy: false,     // opt-in high-entropy base64 sweep (off by default)
+    extraDetectors: [],     // [{ id, kind, pattern, flags }]
+    allowlist: [],          // values/regexes that are deliberately public
+  },
+  cost: {
+    enabled: true,
+    ledgerPath: '',         // blank -> ~/.local/share/maestro/cost-ledger.jsonl
+    rates: {},              // { "<model>": { prompt, completion } } USD per 1M tokens
+  },
 };
 
 function deepMerge(base, over) {

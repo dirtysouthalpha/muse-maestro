@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-cost",
+  "displayName": "Maestro Cost",
+  "version": "0.1.0",
+  "description": "PostLLMCall token/cost telemetry. Appends one JSONL line per model call (tokens, cache-hit %, estimated cost from a configurable rate table) to a ledger. Near-zero overhead, non-blocking, fail-open. Ships a report helper.",
+  "compat": { "source": "native", "manifestDir": ".muse-plugin" },
+  "capabilities": {
+    "skills": [], "commands": [],
+    "hooks": [
+      { "id": "cost", "event": "PostLLMCall", "command": ["node", "hooks/cost.mjs"], "timeoutMs": 4000, "statusMessage": "maestro-cost: ledger" }
+    ],
+    "mcpServers": [], "reminders": []
+  }
+}
