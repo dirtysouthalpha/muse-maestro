@@ -195,9 +195,12 @@ MIT © Brandon Goolsby. See [LICENSE](LICENSE).
 *Self-hosted AI. Security-first. Always innovating.*
 
 - 🚀 [intel-arc-llm-stack](https://github.com/dirtysouthalpha/intel-arc-llm-stack) — run any LLM locally on Intel Arc
-- 🤖 [sentinel-cli](https://github.com/dirtysouthalpha/sentinel-cli) — multi-provider AI coding agent with smart model routing
+- 🤖 [sentinel-code](https://github.com/dirtysouthalpha/sentinel-code) — multi-provider AI coding agent with smart model routing
 - 📊 [intel-arc-llm-benchmarks](https://github.com/dirtysouthalpha/intel-arc-llm-benchmarks) — real Arc B60 inference numbers
-- 🛠️ [msptier3toolkit](https://github.com/dirtysouthalpha/msptier3toolkit) — battle-tested MSP PowerShell
+- 🛠️ [msp-tier3-toolkit](https://github.com/dirtysouthalpha/msp-tier3-toolkit) — battle-tested MSP PowerShell
 - 👤 [@dirtysouthalpha](https://github.com/dirtysouthalpha) — the full fleet
 
 ⭐ If this saved you time, star it and follow for more.
+
+---
+<p align="center"><sub><b>Dirty South Alpha™</b> · © 2026 · <a href="https://dirtysouthalpha.com">dirtysouthalpha.com</a> · self-hosted AI · security-first</sub></p>
