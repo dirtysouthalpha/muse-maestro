@@ -1,11 +1,21 @@
-# Maestro
+<p align="center">
+  <img src="assets/banner.svg" alt="Maestro — a safety-and-sanity plugin suite for Muse Code">
+</p>
 
-**A safety-and-sanity plugin suite for [Meta Muse Code](https://github.com/facebookresearch) (Muse Spark 1.3) — the terminal coding agent.**
+<p align="center">
+  <strong>A safety-and-sanity plugin suite for <a href="https://github.com/facebookresearch">Meta Muse Code</a> (Muse Spark 1.3) — the terminal coding agent.</strong>
+</p>
 
-![license](https://img.shields.io/badge/license-MIT-blue)
-![muse](https://img.shields.io/badge/Muse%20Code-1.3-black)
-![plugins](https://img.shields.io/badge/plugins-7-green)
-![status](https://img.shields.io/badge/hooks-native%20.muse--plugin-orange)
+<p align="center">
+  <img src="https://img.shields.io/badge/license-MIT-22D3EE?style=flat-square&labelColor=0A0A0F" alt="MIT license">
+  <img src="https://img.shields.io/badge/Muse%20Code-1.3-22D3EE?style=flat-square&labelColor=0A0A0F" alt="Muse Code 1.3">
+  <img src="https://img.shields.io/badge/plugins-5-22D3EE?style=flat-square&labelColor=0A0A0F" alt="5 plugins">
+  <img src="https://img.shields.io/badge/built%20with-native%20.muse--plugin-8B5CF6?style=flat-square&labelColor=0A0A0F" alt="native .muse-plugin hooks">
+</p>
+
+<p align="center">
+  <img src="assets/demo.svg" alt="maestro-guardrail denying a catastrophic rm -rf ~/ (real hook output)">
+</p>
 
 Fast agents are wonderful right up until they aren't. Run a coding agent with
 approvals off (`--yolo`) and you trade every confirmation prompt for speed — and
