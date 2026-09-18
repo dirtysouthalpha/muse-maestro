@@ -1,0 +1,95 @@
+{
+  "$comment": "Universal catastrophic-op deny rules for any --yolo agent. Each rule is scanned (case-insensitively unless flags say otherwise) against the tool command text. A match DENIES the tool call with `reason`. Add your own site-specific rules via maestro.config.json -> guardrail.extraDenyRules (see maestro.config.example.json). Patterns are JavaScript RegExp source strings.",
+  "rules": [
+    {
+      "id": "rm-rf-recursive-force-root",
+      "description": "Recursive delete aimed at a root / home / system path or ~",
+      "pattern": "\\brm\\b(?=[^\\n|;&]*(?:(?:^|\\s)-\\w*r\\w*\\b|--recursive\\b))[^\\n|;&]*\\s(?:--no-preserve-root\\s+)?(?:/(?:home|etc|boot|usr|lib|lib64|var|root|sys|proc|bin|sbin|opt|srv)(?:/\\S*)?|/\\*?|~/?\\S*|\\$HOME\\S*)(?=\\s|$|;|&|\\||\\*|\")",
+      "flags": "i"
+    },
+    {
+      "id": "rm-no-preserve-root",
+      "description": "Any use of rm --no-preserve-root (only exists to wipe /)",
+      "pattern": "\\brm\\b[^\\n]*--no-preserve-root",
+      "flags": "i"
+    },
+    {
+      "id": "rm-rf-bare-root-or-home",
+      "description": "rm -rf / or rm -rf ~ or rm -rf /* whole-target forms",
+      "pattern": "\\brm\\s+(?:-\\S+\\s+)*(?:/|/\\*|~|~/\\*?|\\$HOME)(?=\\s|$|;|&|\\|)",
+      "flags": "i"
+    },
+    {
+      "id": "fork-bomb",
+      "description": "Classic bash fork bomb :(){ :|:& };:",
+      "pattern": ":\\s*\\(\\s*\\)\\s*\\{\\s*:\\s*\\|\\s*:\\s*&\\s*\\}\\s*;\\s*:",
+      "flags": ""
+    },
+    {
+      "id": "fork-bomb-generic",
+      "description": "Named recursive fork bomb (fn(){ fn|fn& };fn)",
+      "pattern": "(\\w+)\\s*\\(\\s*\\)\\s*\\{[^}]*\\b\\1\\s*\\|\\s*\\1\\s*&[^}]*\\}\\s*;\\s*\\1",
+      "flags": ""
+    },
+    {
+      "id": "mkfs-any",
+      "description": "Formatting a filesystem onto a device wipes it",
+      "pattern": "\\bmkfs(?:\\.[a-z0-9]+)?\\s+[^\\n]*(?:/dev/|\\$)",
+      "flags": "i"
+    },
+    {
+      "id": "dd-to-device",
+      "description": "dd writing to a block device (of=/dev/...)",
+      "pattern": "\\bdd\\b[^\\n]*\\bof=\\s*/dev/(?:sd|nvme|vd|hd|mmcblk|disk|xvd)",
+      "flags": "i"
+    },
+    {
+      "id": "overwrite-block-device",
+      "description": "Redirecting output straight onto a block device node",
+      "pattern": ">\\s*/dev/(?:sd|nvme|vd|hd|mmcblk|disk|xvd)\\w*",
+      "flags": "i"
+    },
+    {
+      "id": "wipefs-device",
+      "description": "wipefs / blkdiscard against a device",
+      "pattern": "\\b(?:wipefs|blkdiscard|shred)\\b[^\\n]*/dev/(?:sd|nvme|vd|hd|mmcblk|disk|xvd)",
+      "flags": "i"
+    },
+    {
+      "id": "curl-pipe-shell",
+      "description": "Piping a downloaded remote script straight into a shell",
+      "pattern": "\\b(?:curl|wget|fetch)\\b[^\\n|]*\\|\\s*(?:sudo\\s+)?(?:bash|sh|zsh|ksh|dash|python[0-9.]*|node|perl|ruby)\\b",
+      "flags": "i"
+    },
+    {
+      "id": "chmod-777-system",
+      "description": "chmod 777 (recursive) on / or a system directory",
+      "pattern": "\\bchmod\\b[^\\n]*\\b(?:-[a-zA-Z]*R[a-zA-Z]*\\s+)?0?777\\s+(?:/|/\\*|/etc|/usr|/bin|/sbin|/lib|/boot|/var|/root|/opt)(?:/\\S*)?(?:\\s|$)",
+      "flags": "i"
+    },
+    {
+      "id": "chown-recursive-root",
+      "description": "Recursive chown of / or a top-level system directory",
+      "pattern": "\\bchown\\b[^\\n]*\\s-[a-zA-Z]*R[a-zA-Z]*\\s+[^\\n]*\\s(?:/|/etc|/usr|/bin|/boot|/var|/root)(?:/\\S*)?(?:\\s|$)",
+      "flags": "i"
+    },
+    {
+      "id": "git-push-force-protected",
+      "description": "Force-push (--force / -f) to a protected branch (main/master/release/prod)",
+      "pattern": "\\bgit\\b[^\\n]*\\bpush\\b[^\\n]*(?:--force(?!-with-lease)\\b|--force-with-lease\\b|\\s-f\\b)[^\\n]*\\b(?:main|master|release(?:[/-]\\S+)?|prod(?:uction)?)\\b",
+      "flags": "i"
+    },
+    {
+      "id": "git-push-force-head-protected",
+      "description": "Force-push naming a protected branch before the flag ordering",
+      "pattern": "\\bgit\\b[^\\n]*\\bpush\\b[^\\n]*\\b(?:main|master|release|prod|production)\\b[^\\n]*(?:--force(?!-with-lease)\\b|\\s-f\\b)",
+      "flags": "i"
+    },
+    {
+      "id": "history-wipe-then-nuke",
+      "description": "Truncating shell history is a common cover step; flag with an active wipe",
+      "pattern": "(?:history\\s+-c\\s*;\\s*)?\\brm\\s+-\\w*[rf][^\\n]*\\s/(?:\\s|$|\\*)",
+      "flags": "i"
+    }
+  ]
+}

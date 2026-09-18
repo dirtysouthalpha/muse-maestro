@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-session-watch",
+  "displayName": "Maestro Session Watch",
+  "version": "0.1.0",
+  "description": "Advisory guard against unbounded session transcripts. On PostToolUse and PreCompact it warns (once per size band) when the transcript crosses ~2 MB / ~150k tokens and suggests a fresh session. Non-blocking, fail-open.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "post",
+        "event": "PostToolUse",
+        "command": ["node", "hooks/post.mjs"],
+        "timeoutMs": 4000,
+        "statusMessage": "maestro-session-watch: size check"
+      },
+      {
+        "id": "precompact",
+        "event": "PreCompact",
+        "command": ["node", "hooks/precompact.mjs"],
+        "timeoutMs": 4000,
+        "statusMessage": "maestro-session-watch: size check"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

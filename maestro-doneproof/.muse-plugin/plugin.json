@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-doneproof",
+  "displayName": "Maestro Done-Proof",
+  "version": "0.1.0",
+  "description": "Stop hook: if the final message claims success (done/fixed/passing/complete/verified) with no evidence, it blocks the stop and asks for proof. Override phrase available. Fail-open.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "doneproof",
+        "event": "Stop",
+        "command": ["node", "hooks/doneproof.mjs"],
+        "timeoutMs": 4000,
+        "statusMessage": "maestro-doneproof: evidence check"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

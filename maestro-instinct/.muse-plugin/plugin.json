@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-instinct",
+  "displayName": "Maestro Instinct",
+  "version": "0.1.0",
+  "description": "Consults a learned-ops memory command you configure and surfaces its top output as context — on SessionStart, and on PreToolUse before cron/GPU/host/model-server work. Disabled until you set instinct.command. Bounded, silent-when-empty, fail-open.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "start",
+        "event": "SessionStart",
+        "command": ["node", "hooks/start.mjs"],
+        "timeoutMs": 3000,
+        "statusMessage": "maestro-instinct: load instincts"
+      },
+      {
+        "id": "pre",
+        "event": "PreToolUse",
+        "command": ["node", "hooks/pre.mjs"],
+        "timeoutMs": 3000,
+        "statusMessage": "maestro-instinct: risk instincts"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

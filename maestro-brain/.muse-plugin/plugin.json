@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-brain",
+  "displayName": "Maestro Brain",
+  "version": "0.1.0",
+  "description": "SessionEnd: conservatively persist a durable fleet fact or fix from the session to any HTTP memory endpoint (disabled until you configure an endpoint). Dedupes before writing; fully fail-open.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "brain",
+        "event": "SessionEnd",
+        "command": ["node", "hooks/brain.mjs"],
+        "timeoutMs": 6000,
+        "statusMessage": "maestro-brain: persist durable facts"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

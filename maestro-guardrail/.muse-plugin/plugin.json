@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "name": "maestro-guardrail",
+  "displayName": "Maestro Guardrail",
+  "version": "0.1.0",
+  "description": "PreToolUse safety floor: denies only catastrophic, irreversible ops (root/home recursive deletes, fork bombs, mkfs/dd on a device, force-push to a protected branch, curl|bash) and lets everything else run at full speed.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "guardrail",
+        "event": "PreToolUse",
+        "command": ["node", "hooks/guardrail.mjs"],
+        "timeoutMs": 4000,
+        "statusMessage": "maestro-guardrail: catastrophe check"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

@@ -1,0 +1,20 @@
+# Local, site-specific Maestro config — NEVER commit real infra values.
+maestro.config.json
+
+# Any environment / secret material
+.env
+.env.*
+*.env
+**/secrets.json
+*secret*
+*.secret
+
+# Anything explicitly marked local (keeps private infra out of the public repo)
+*.local.json
+*local.json
+
+# OS / editor noise
+.DS_Store
+*.swp
+*~
+node_modules/

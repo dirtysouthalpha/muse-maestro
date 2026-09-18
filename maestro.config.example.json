@@ -1,0 +1,86 @@
+{
+  "$schema_note": "Copy this file to ~/.config/maestro/config.json (or to maestro.config.json beside the plugins, which is gitignored) and edit. Every field is optional; omitted fields fall back to safe built-in defaults. Nothing here is required for the plugins to load.",
+
+  "guardrail": {
+    "enabled": true,
+    "$extraDenyRules_note": "Universal catastrophic-op rules already ship in maestro-guardrail/data/denylist.json. Add YOUR OWN site-specific rules here. Each rule is { id, description, pattern (JS RegExp source), flags }. The examples below are commented-out patterns (as $example keys) you can copy into the real 'extraDenyRules' array and adapt to your own paths/hosts/containers.",
+    "extraDenyRules": [],
+    "$example_nas_delete": {
+      "id": "nas-destructive",
+      "description": "Destructive op against the NAS share or its host",
+      "pattern": "\\b(rm|mkfs|dd|shred)\\b[^\\n]*(/mnt/YOUR_SHARE|YOUR\\.NAS\\.IP\\.HERE)",
+      "flags": "i"
+    },
+    "$example_stop_media_container": {
+      "id": "stop-media-containers",
+      "description": "Do not stop/remove critical media containers",
+      "pattern": "\\bdocker\\b[^\\n]*\\b(rm\\s+-f|stop|kill)\\b[^\\n]*\\b(container_a|container_b|container_c)\\b",
+      "flags": "i"
+    },
+    "$example_force_push_public": {
+      "id": "force-push-public-origin",
+      "description": "Never force-push over a specific public/protected origin",
+      "pattern": "\\bgit\\b[^\\n]*push[^\\n]*(--force|\\s-f\\b)[^\\n]*\\bYOUR_PUBLIC_REMOTE\\b",
+      "flags": "i"
+    },
+    "$example_protect_crash_fixes": {
+      "id": "protect-system-shims",
+      "description": "Do not touch host crash-fix shims / held packages",
+      "pattern": "(>\\s*/usr/bin/timeout\\b|dpkg-divert[^\\n]*--remove|apt-mark\\s+unhold|apt(-get)?\\s+remove[^\\n]*\\b(coreutils|mesa|libdrm)\\b)",
+      "flags": "i"
+    }
+  },
+
+  "brain": {
+    "$note": "Disabled by default. Point it at ANY HTTP memory endpoint to enable. It POSTs {content, region, source, topic} on SessionEnd for durable facts only, and dedupes via a GET ...?q= search first.",
+    "enabled": false,
+    "endpoint": "",
+    "searchEndpoint": "",
+    "source": "muse-maestro",
+    "region": "knowledge",
+    "topic": "muse-maestro",
+    "timeoutMs": 4000
+  },
+
+  "doneproof": {
+    "enabled": true,
+    "overridePhrase": "[skip-doneproof]",
+    "claimPattern": "\\b(done|fixed|passing|passes|complete|completed|verified|works now|resolved|deployed|shipped)\\b",
+    "evidencePattern": "(evidence|verified by|exit code|exit 0|tests? (pass|passed)|\\boutput:|\\blogs?:|\\bran\\b|http[s]?://|\\$\\s|\\bstat\\b|checksum|diff|screenshot)"
+  },
+
+  "sessionWatch": {
+    "enabled": true,
+    "bytesWarn": 2000000,
+    "tokensWarn": 150000,
+    "bytesPerToken": 4
+  },
+
+  "instinct": {
+    "$note": "Disabled and command-less by default. Set 'command' to an argv array of your learned-ops memory tool; the context string is appended as the final arg.",
+    "enabled": false,
+    "command": [],
+    "$example_command": ["python3", "/path/to/instinct.py", "inject"],
+    "timeoutMs": 2000,
+    "triggerPattern": "(cron\\b|crontab|\\bgpu\\b|nvidia|earlyoom|ollama|llama[-_ ]?swap|systemctl|model[ -]?server|reboot|shutdown)"
+  },
+
+  "secrets": {
+    "$note": "maestro-secrets (plugin 6): blocks/redacts secret-shaped strings. Universal detectors ship as defaults; add your own patterns and an allowlist for deliberately-public values.",
+    "enabled": true,
+    "mode": "redact",
+    "extraDetectors": [],
+    "$example_detector": { "id": "internal-token", "kind": "internal-token", "pattern": "\\bINT-[A-Z0-9]{20,}\\b", "flags": "" },
+    "allowlist": []
+  },
+
+  "cost": {
+    "$note": "maestro-cost (plugin 7): appends one JSONL line per model call. Set per-model rates ($ per 1M tokens) to get cost estimates; unknown models cost 0.",
+    "enabled": true,
+    "ledgerPath": "",
+    "rates": {
+      "$note": "USD per 1,000,000 tokens. Example rates only — set your own.",
+      "$example_model": { "prompt": 0.0, "completion": 0.0 }
+    }
+  }
+}
