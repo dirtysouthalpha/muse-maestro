@@ -189,3 +189,15 @@ and exits 0, so Maestro can never be the reason your agent stalls.
 ## License
 
 MIT © Brandon Goolsby. See [LICENSE](LICENSE).
+
+---
+### More from Dirty South Alpha
+*Self-hosted AI. Security-first. Always innovating.*
+
+- 🚀 [intel-arc-llm-stack](https://github.com/dirtysouthalpha/intel-arc-llm-stack) — run any LLM locally on Intel Arc
+- 🤖 [sentinel-cli](https://github.com/dirtysouthalpha/sentinel-cli) — multi-provider AI coding agent with smart model routing
+- 📊 [intel-arc-llm-benchmarks](https://github.com/dirtysouthalpha/intel-arc-llm-benchmarks) — real Arc B60 inference numbers
+- 🛠️ [msptier3toolkit](https://github.com/dirtysouthalpha/msptier3toolkit) — battle-tested MSP PowerShell
+- 👤 [@dirtysouthalpha](https://github.com/dirtysouthalpha) — the full fleet
+
+⭐ If this saved you time, star it and follow for more.
