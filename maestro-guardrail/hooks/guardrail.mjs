@@ -39,7 +39,7 @@ function deny(reason) {
 }
 
 // Pull the human-meaningful command text out of any tool payload shape.
-function extractText(event) {
+export function extractText(event) {
   const parts = [];
   try {
     const ti = event && event.tool_input;
@@ -56,16 +56,9 @@ function extractText(event) {
   return parts.join('\n');
 }
 
-async function main() {
-  const event = await readStdin();
-  const cfg = loadConfig();
-
-  if (!cfg.guardrail || cfg.guardrail.enabled === false) allow();
-
-  const text = extractText(event);
-  if (!text) allow();
-
-  // Load shipped rules + user extra rules.
+// Load shipped rules (data/denylist.json) plus user extraDenyRules from config.
+// Pure (no process exit); unreadable inputs degrade to fewer rules, never a throw.
+export function loadRules(cfg) {
   let rules = [];
   try {
     const here = path.dirname(fileURLToPath(import.meta.url));
@@ -75,26 +68,50 @@ async function main() {
     // If the shipped list is unreadable we still honor config rules below.
   }
   try {
-    const extra = cfg.guardrail && cfg.guardrail.extraDenyRules;
+    const extra = cfg && cfg.guardrail && cfg.guardrail.extraDenyRules;
     if (Array.isArray(extra)) rules = rules.concat(extra);
   } catch {}
+  return rules;
+}
 
+// Return the first rule whose pattern matches `text`, or null. Pure.
+// A bad regex in one rule must not disable the rest, and must not block.
+export function matchRule(text, rules) {
+  if (!text || !Array.isArray(rules)) return null;
   for (const rule of rules) {
     try {
       if (!rule || typeof rule.pattern !== 'string') continue;
       const re = new RegExp(rule.pattern, typeof rule.flags === 'string' ? rule.flags : 'i');
-      if (re.test(text)) {
-        const id = rule.id || 'rule';
-        const desc = rule.description || 'catastrophic operation blocked';
-        deny(`maestro-guardrail: blocked [${id}] ${desc}. This op is denied as irreversible/destructive. If you truly intend it, run it yourself outside Muse, or add an allowance to your maestro config.`);
-      }
+      if (re.test(text)) return rule;
     } catch {
-      // A bad regex in one rule must not disable the rest, and must not block.
       continue;
     }
   }
+  return null;
+}
+
+export function denyReason(rule) {
+  const id = (rule && rule.id) || 'rule';
+  const desc = (rule && rule.description) || 'catastrophic operation blocked';
+  return `maestro-guardrail: blocked [${id}] ${desc}. This op is denied as irreversible/destructive. If you truly intend it, run it yourself outside Muse, or add an allowance to your maestro config.`;
+}
+
+async function main() {
+  const event = await readStdin();
+  const cfg = loadConfig();
+
+  if (!cfg.guardrail || cfg.guardrail.enabled === false) allow();
+
+  const text = extractText(event);
+  if (!text) allow();
+
+  const hit = matchRule(text, loadRules(cfg));
+  if (hit) deny(denyReason(hit));
 
   allow();
 }
 
-main().catch(() => process.exit(0)); // absolute fail-open
+// Only run the hook when executed directly (so the pure helpers are importable by tests).
+let isMain = false;
+try { isMain = !!process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url); } catch {}
+if (isMain) main().catch(() => process.exit(0)); // absolute fail-open

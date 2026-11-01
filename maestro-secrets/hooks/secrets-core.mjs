@@ -119,7 +119,10 @@ export function redact(text, cfgIn) {
   let out = text;
   for (const d of buildDetectors(cfg)) {
     try {
-      out = out.replace(new RegExp(d.re.source, d.re.flags), (full, g1) => {
+      out = out.replace(new RegExp(d.re.source, d.re.flags), (full, maybeGroup) => {
+        // With no capture group, String.replace passes the match OFFSET (a number)
+        // as the second argument, so only treat a string as the captured value.
+        const g1 = typeof maybeGroup === 'string' ? maybeGroup : '';
         const val = g1 || full;
         if (d.id === 'env-secret-assignment' && PLACEHOLDER.test(val)) return full;
         if (allowlisted(cfg, val)) return full;

@@ -1,16 +1,17 @@
-<p align="center">
-  <img src="assets/banner.svg" alt="Maestro — a safety-and-sanity plugin suite for Muse Code">
-</p>
+# muse-maestro
+
+**A safety-and-sanity plugin suite for [Meta Muse Code](https://github.com/facebookresearch) (Muse Spark 1.3) — seven small, native, fail-open plugins that give a `--yolo` coding agent a safety floor without slowing it down.**
 
 <p align="center">
-  <strong>A safety-and-sanity plugin suite for <a href="https://github.com/facebookresearch">Meta Muse Code</a> (Muse Spark 1.3) — the terminal coding agent.</strong>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/license-MIT-22D3EE?style=flat-square&labelColor=0A0A0F" alt="MIT license">
-  <img src="https://img.shields.io/badge/Muse%20Code-1.3-22D3EE?style=flat-square&labelColor=0A0A0F" alt="Muse Code 1.3">
-  <img src="https://img.shields.io/badge/plugins-5-22D3EE?style=flat-square&labelColor=0A0A0F" alt="5 plugins">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-22D3EE?style=flat-square&labelColor=0A0A0F" alt="MIT license"></a>
+  <a href="https://github.com/dirtysouthalpha/muse-maestro/actions/workflows/ci.yml"><img src="https://github.com/dirtysouthalpha/muse-maestro/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Muse%20Code-1.3-22D3EE?style=flat-square&labelColor=0A0A0F" alt="Meta Muse Code 1.3">
+  <img src="https://img.shields.io/badge/plugins-7-22D3EE?style=flat-square&labelColor=0A0A0F" alt="7 plugins">
   <img src="https://img.shields.io/badge/built%20with-native%20.muse--plugin-8B5CF6?style=flat-square&labelColor=0A0A0F" alt="native .muse-plugin hooks">
+</p>
+
+<p align="center">
+  <img src="assets/banner.svg" alt="Maestro — a safety-and-sanity plugin suite for Meta Muse Code">
 </p>
 
 <p align="center">
@@ -19,8 +20,38 @@
 
 Fast agents are wonderful right up until they aren't. Run a coding agent with
 approvals off (`--yolo`) and you trade every confirmation prompt for speed — and
-for risk. Maestro is the seatbelt: five small, native Muse plugins that add a
+for risk. Maestro is the seatbelt: small, native Muse plugins that add a
 safety floor and a few good habits **without slowing the agent down**.
+
+## Quickstart
+
+Requires the `muse` CLI on your `PATH` and Node.js 20 or newer.
+
+```bash
+git clone https://github.com/dirtysouthalpha/muse-maestro.git
+cd muse-maestro
+./install.sh                  # validates, installs, and APPROVES every plugin
+muse plugins list             # confirm the seven maestro-* plugins are loaded
+
+# optional: override the safe defaults
+cp maestro.config.example.json ~/.config/maestro/config.json
+
+# run the test suite (no dependencies; node:test only)
+npm test
+
+# remove everything, fully reversible
+./install.sh --uninstall
+```
+
+## Tested with
+
+Built only from what this repo documents; add your setup via PR.
+
+| Component | Version | Notes |
+| --- | --- | --- |
+| Meta Muse Code | 1.3.0 | Hook contracts verified against this release (see comments in `maestro-guardrail/hooks/guardrail.mjs` and `maestro-secrets/hooks/secrets-core.mjs`) |
+| Node.js | 22 (CI); `>=20` required | `npm test` runs on `actions/setup-node@v4` with Node 22; `package.json` declares `engines.node >=20` |
+| OS | TBD — add your machine via PR | `install.sh` is Bash; CI runs on `ubuntu-24.04` |
 
 ---
 
