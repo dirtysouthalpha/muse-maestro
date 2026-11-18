@@ -155,7 +155,7 @@ persists the *durable* takeaways at session end.)
 Requires the `muse` CLI on your `PATH` and Node.js.
 
 ```bash
-git clone https://github.com/<you>/muse-maestro.git
+git clone https://github.com/dirtysouthalpha/muse-maestro.git
 cd muse-maestro
 ./install.sh          # validates, installs, and APPROVES every plugin
 ```
